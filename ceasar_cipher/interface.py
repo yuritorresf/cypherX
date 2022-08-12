@@ -6,7 +6,7 @@ def cls():
 
 class InterfaceLaucher:
 
-    def __init__(self, argv):
+    def __init__(self, argv: list):
         
         # @commands
         #
