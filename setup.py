@@ -10,7 +10,7 @@ setuptools.setup(
     project_urls = {
         'Código fonte': 'https://github.com/yuritorresf/cypherx',
         "Bug Tracker": "https://github.com/yuritorresf/cypherx/issues",
-        'Download': 'https://github.com/yuritorresf/cypherx/archive/1.8.zip'
+        'Download': 'https://github.com/yuritorresf/cypherx/archive/1.2.zip'
     },
     license='MIT',
     author='Yuri Torres',
