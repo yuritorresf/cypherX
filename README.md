@@ -22,9 +22,9 @@ python setup.py install
 
 ## Uso
 
-### Comandos disponíveis via linha de comando
+### Argumentos disponíveis via linha de comando
 ```
-python cypherx.py -h
+cypherx -h
 
 argumentos posicionais:
   start                             Inicia o programa em modo de interface gráfica via terminal.
