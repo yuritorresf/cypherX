@@ -1,3 +1,26 @@
+Metadata-Version: 2.1
+Name: cypherx
+Version: 1.2
+Summary: Ferramenta de criptografia e descriptografia de textos
+Home-page: https://github.com/yuritorresf/cypherx
+Author: Yuri Torres
+Author-email: feereira@gmail.com
+License: MIT
+Project-URL: Código fonte, https://github.com/yuritorresf/cypherx
+Project-URL: Bug Tracker, https://github.com/yuritorresf/cypherx/issues
+Project-URL: Download, https://github.com/yuritorresf/cypherx/archive/1.8.zip
+Keywords: cypherx,package,cryptography,cryptography package
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: Portuguese (Brazilian)
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Internationalization
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # Cypherx
 
 **Cypherx** é uma ferramenta simples e descomplicada para criptografar e descriptografar textos
@@ -63,3 +86,4 @@ cypherx -a -d -m "mensagem"
 
 ## Contribuição
 Pull requests são bem-vindos. Para mudanças importantes, abra um problema primeiro para discutir o que você gostaria de mudar.
+
