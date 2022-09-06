@@ -5,12 +5,12 @@ with open('README.md') as f:
 
 setuptools.setup(
     name='cypherx',
-    version='1.3',
+    version='1.3.1',
     url='https://github.com/yuritorresf/cypherx',
     project_urls = {
         'Código fonte': 'https://github.com/yuritorresf/cypherx',
         "Bug Tracker": "https://github.com/yuritorresf/cypherx/issues",
-        'Download': 'https://github.com/yuritorresf/cypherx/archive/1.3.zip'
+        'Download': 'https://github.com/yuritorresf/cypherx/archive/1.3.1.zip'
     },
     license='MIT',
     author='Yuri Torres',
@@ -20,7 +20,7 @@ setuptools.setup(
     keywords='cypherx, package, cryptography, cryptography package',
     description='Ferramenta de criptografia e descriptografia de textos',
     packages=setuptools.find_packages(),
-    install_requires=['argparse', 'rich', 'setuptools', 'twine', 'wheel'],
+    install_requires=['argparse', 'rich'],
     classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',

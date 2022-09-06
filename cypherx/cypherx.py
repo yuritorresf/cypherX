@@ -3,7 +3,6 @@
 
 import sys
 import string
-import argparse
 
 import time
 import os
@@ -14,45 +13,23 @@ from rich.live import Live
 
 class CypherX:
 
-    def __init__(self):
+    def __init__(self, args):
         
         self.console = Console()
 
         if len(sys.argv) >= 1:
-
-            parser = argparse.ArgumentParser(prog="cypherx", description="CypherX - A simple and easy to use cryptography program.")
-
-            sub_parser = parser.add_subparsers(dest="command", help="Commands")
-            sub_parser.add_parser("start", help="Start the program in TUI mode.")
             
-            cipher = parser.add_mutually_exclusive_group()
-            cipher.add_argument("-c", "--caesar", help="Caesar Cipher", action="store_true")
-            cipher.add_argument("-a", "--atbash", help="Atbash Cipher", action="store_true")
-            
-            encdec = parser.add_mutually_exclusive_group()
-            encdec.add_argument("-e", "--encrypt", help="Encrypt a message.", action="store_true")
-            encdec.add_argument("-d", "--decrypt", help="Decrypt a message.", action="store_true")
-            encdec.add_argument("-f", "--force-decrypt", help="Force decrypt a message.", action="store_true")
-            
-            parser.add_argument("-m", "--message", help="Choose a message to encrypt/decrypt.", action="store", type=str, default=None)
-            
-            parser.add_argument("-k", "--key", "-o", "--order", metavar="KEY/ORDER", help="Key [Required for: Caesar]", action="store")
-            parser.add_argument("--version", action="version", version="%(prog)s 1.3")
-
-            parser.add_argument("-v", "--verbose", help="Verbose mode.", action="store_true")
-            parser.add_argument("-q", "--quiet", help="Quiet mode.", action="store_true")
-
-            args = parser.parse_args()
+            self.__version__ = '1.3.1'
 
             if args.caesar:
                 if args.encrypt:
                     if args.key and args.message:
                         if args.verbose:
-                            print("[bold gray]\nCypherX version 1.3[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
+                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
                         elif args.quiet:
                             pass
                         else:
-                            print("[bold gray]\nCypherX version 1.3[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
+                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
                             
                         with self.console.status("[bold green] Encrypting...[/bold green]",) as status:
                             caesar = Caesar(args.message, int(args.key), 0)
@@ -79,11 +56,11 @@ class CypherX:
                 elif args.decrypt:
                     if args.key and args.message:
                         if args.verbose:
-                            print("[bold gray]\nCypherX version 1.3[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
+                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
                         elif args.quiet:
                             pass
                         else:
-                            print("[bold gray]\nCypherX version 1.3[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
+                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
                             
                         with self.console.status("[bold green] Decrypting...[/bold green]",) as status:
                             caesar = Caesar(args.message, int(args.key), 1)
@@ -109,11 +86,11 @@ class CypherX:
                 elif args.force_decrypt:
                     if args.message != None or args.message != "":
                         if args.verbose:
-                            print("[bold gray]\nCypherX version 1.3[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
+                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
                         elif args.quiet:
                             pass
                         else:
-                            print("[bold gray]\nCypherX version 1.3[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
+                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
                             
                         with self.console.status("[bold green] Decrypting...[/bold green]",) as status:
                             caesar = Caesar(args.message, args.key, 2).force()
@@ -138,11 +115,11 @@ class CypherX:
             elif args.atbash:
 
                 if args.verbose:
-                    print("[bold gray]\nCypherX version 1.3[/bold gray]. [bold red]Atbash[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
+                    print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Atbash[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
                 elif args.quiet:
                     pass
                 else:
-                    print("[bold gray]\nCypherX version 1.3[/bold gray]. [bold red]Atbash[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
+                    print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Atbash[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
                     
                 if args.encrypt:  
                     with self.console.status("[bold green] Encrypting...[/bold green]",) as status:
