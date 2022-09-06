@@ -2,15 +2,10 @@
 
 **Cypherx** é uma ferramenta simples e descomplicada para criptografar e descriptografar textos
 
-## Requerimentos
-python 3.6.3 ou superior
-argparse
-rich
-### Para desenvolvimento
-setuptools
-twine
-
-
+## Requirements
+python 3.6.3 or above
+### Devs dependecies 
+setuptools & twine
 
 ## Instalação
 

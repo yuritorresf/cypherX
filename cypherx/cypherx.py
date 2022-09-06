@@ -8,80 +8,79 @@ import time
 import os
 from rich import print
 from rich.console import Console
-from rich.layout import Layout
-from rich.live import Live
+
+import interface
 
 class CypherX:
 
     def __init__(self, args):
         
         self.console = Console()
+        
+        print()
 
         if len(sys.argv) >= 1:
             
             self.__version__ = '1.3.1'
 
             if args.caesar:
-                if args.encrypt:
-                    if args.key and args.message:
-                        if args.verbose:
-                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
-                        elif args.quiet:
-                            pass
-                        else:
-                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]encrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
-                            
+                if args.key and args.message:
+                    if args.encrypt:
+
                         with self.console.status("[bold green] Encrypting...[/bold green]",) as status:
                             caesar = Caesar(args.message, int(args.key), 0)
                             time.sleep(1)
 
                         if args.verbose:
-                            print(f"[bold][\N{check mark}] Message encrypted successfully![/bold]", end="\n", flush=True)
-                            print(f"\n[gray][+] Message:[/gray] [bold yellow]{args.message}[/bold yellow]")
-                            print(f"[gray][+] Key/Order:[/gray] [bold orange]{args.key}[/bold orange]")
-                            print(f"[gray][=] Encrypted message:[/gray] [bold green]{caesar}[/bold green]")
-                            print(f"\n[gray][\N{check mark}][/gray][bold green] Done![/bold green]")
+                            cli = interface.CLI(caesar, args.message, args.key, "caesar", "verbose", "encrypt")
                         
                         elif args.quiet:
-                            print(caesar)
+                            cli = interface.CLI(caesar, args.message, args.key, "caesar", "quiet", "encrypt")
                         
                         else:
-                            print(f"[bold][\N{check mark}] Message encrypted successfully![/bold]", end="\n\n", flush=True)
-                            print(f"[gray][=] Encrypted message:[/gray] [bold green]{caesar}[/bold green]")
-                            print(f"\n[gray][\N{check mark}][/gray][bold green] Done![/bold green]")
+                            cli = interface.CLI(caesar, args.message, args.key, "caesar", "normal", "encrypt")
                     
-                    else:
-                        print("[!] Error: Missing key arguments.\nUse 'cypherx -h' for more information.")
-                
-                elif args.decrypt:
-                    if args.key and args.message:
-                        if args.verbose:
-                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]verbose[/bold yellow] mode.\n")
-                        elif args.quiet:
-                            pass
-                        else:
-                            print(f"[bold gray]\nCypherX version {self.__version__}[/bold gray]. [bold red]Caesar[/bold red] cipher, [bold green]decrypt[/bold green] method in [bold yellow]normal[/bold yellow] mode.\n")
-                            
+                        cli.banner()
+                        cli.showResult()
+                    
+                    elif args.decrypt:
+
                         with self.console.status("[bold green] Decrypting...[/bold green]",) as status:
-                            caesar = Caesar(args.message, int(args.key), 1)
+                            caesar = Caesar(args.message, int(args.key), 0)
                             time.sleep(1)
 
                         if args.verbose:
-                            print(f"[bold][\N{check mark}] Message decrypted successfully![/bold]", end="\n", flush=True)
-                            print(f"\n[gray][+] Message:[/gray] [bold yellow]{args.message}[/bold yellow]")
-                            print(f"[gray][+] Key/Order:[/gray] [bold orange]{args.key}[/bold orange]")
-                            print(f"[gray][=] Decrypted message:[/gray] [bold green]{caesar}[/bold green]")
-                            print(f"\n[gray][\N{check mark}][/gray][bold green] Done![/bold green]")
+                            cli = interface.CLI(caesar, args.message, args.key, "caesar", "verbose", "decrypt")
                         
                         elif args.quiet:
-                            print(caesar)
+                            cli = interface.CLI(caesar, args.message, args.key, "caesar", "quiet", "decrypt")
                         
                         else:
-                            print(f"[bold][\N{check mark}] Message encrypted successfully![/bold]", end="\n\n", flush=True)
-                            print(f"[gray][=] Encrypted message:[/gray] [bold green]{caesar}[/bold green]")
-                            print(f"\n[gray][\N{check mark}][/gray][bold green] Done![/bold green]")
+                            cli = interface.CLI(caesar, args.message, args.key, "caesar", "normal", "decrypt")
+                    
+                        cli.banner()
+                        cli.showResult()
+
+                    elif args.force_decrypt:
+
+                        with self.console.status("[bold green] Force decrypting...[/bold green]",) as status:
+                            caesar = Caesar(args.message, int(args.key), 2).force()
+                            time.sleep(1)
+
+                        if args.verbose:
+                            cli = interface.CLI(caesar, args.message, args.key, 1, 1, 1)
+                        
+                        elif args.quiet:
+                            cli = interface.CLI(caesar, args.message, args.key, 1, 2, 1)
+                        
+                        else:
+                            cli = interface.CLI(caesar, args.message, args.key, 1, 0, 1)
+                    
+                        cli.banner()
+                        cli.showResult()
                     else:
                         print("[!] Error: Missing key arguments.\nUse 'cypherx -h' for more information.")
+                
 
                 elif args.force_decrypt:
                     if args.message != None or args.message != "":
@@ -159,7 +158,7 @@ class CypherX:
                 else:
                     print("[!] Error: You must choose between encrypt or decrypt.")
             elif args.command == 'start':
-                StartTUI()
+                interface.StartTUI()
 class Caesar:
 
     def __init__(self, text, order, mod):
@@ -213,7 +212,7 @@ class Caesar:
 
 class Atbash:
 
-    def __init__(self, text=str, mod=int) -> None:
+    def __init__(self, text=str, mod=int) -> str:
         self.__text = text
         self.__mod = mod
 
@@ -227,7 +226,7 @@ class Atbash:
         else:
             raise ValueError("[!] Invalid mod")
 
-    def encrypt(self):
+    def encrypt(self) -> str:
         encrypted = ""
         for char in self.__text:
             if char in self.alphabet:
@@ -238,7 +237,7 @@ class Atbash:
                 encrypted += char
         return encrypted
 
-    def decrypt(self):
+    def decrypt(self) -> str:
         decrypted = ""
         for char in self.__text:
             if char in self.alphabet:
@@ -249,176 +248,6 @@ class Atbash:
                 decrypted += char
         return decrypted
     
-    def __str__(self):
+    def __str__(self) -> str:
         return self.data
 
-class StartTUI:
-
-    def cls(self):
-        os.system('cls' if os.name=='nt' else 'clear')
-
-    def __init__(self, argv: list = "") -> None:
-
-        self.banner = str("\n  [bold green]▄████▄▓██   ██▓ ██▓███   ██░ ██ ▓█████  ██▀███  ▒██   ██▒\n" +
-            " ▒██▀ ▀█ ▒██  ██▒▓██░  ██▒▓██░ ██▒▓█   ▀ ▓██ ▒ ██▒▒▒ █ █ ▒░\n" +
-            " ▒▓█    ▄ ▒██ ██░▓██░ ██▓▒▒██▀▀██░▒███   ▓██ ░▄█ ▒░░  █   ░\n" +
-            " ▒▓▓▄ ▄██▒░ ▐██▓░▒██▄█▓▒ ▒░▓█ ░██ ▒▓█  ▄ ▒██▀▀█▄   ░ █ █ ▒\n" +
-            " ▒ ▓███▀ ░░ ██▒▓░▒██▒ ░  ░░▓█▒░██▓░▒████▒░██▓ ▒██▒▒██▒ ▒██▒\n" +
-            " ░ ░▒ ▒  ░ ██▒▒▒ ▒▓▒░ ░  ░ ▒ ░░▒░▒░░ ▒░ ░░ ▒▓ ░▒▓░▒▒ ░ ░▓ ░\n" +
-            "   ░  ▒  ▓██ ░▒░ ░▒ ░      ▒ ░▒░ ░ ░ ░  ░  ░▒ ░ ▒░░░   ░▒ ░\n" +
-            " ░       ▒ ▒ ░░  ░░        ░  ░░ ░   ░     ░░   ░  ░    ░\n" +  
-            " ░ ░     ░ ░               ░  ░  ░   ░  ░   ░      ░    ░\n" +  
-            " ░       ░ ░                                               [/bold green]")
-
-        self.menu = str("\n Welcome to [link=https://github.com/yuritorresf/cypherx.git][green]CypherX[/green][/link], a simple and easy \r to use cryptography program.\n\n" +
-            " Choice an option:\n\n" +
-            " [bold]1 - Caesar\n" +
-            " 2 - Atbash\n" +
-            " 0 - [red]Exit[/red]\n[/bold]"
-        )
-
-        self.terminalUI()
-
-
-    def CaesarTUI(self):
-        try:
-            try:
-                self.cls()
-                print(self.banner)
-                print(" Caesar Cipher\n")
-                print(" 1 - Encrypt")
-                print(" 2 - Decrypt")
-                print(" 3 - Force Decrypt")
-                print(" 0 - [bold red]Back[/bold red]")
-                caesar_choice = int(input("\n [=] Enter your choice: "))
-
-                if caesar_choice == 1:
-                    self.cls()
-                    print(self.banner)
-                    print(" Caesar Cipher - Encrypt\n")
-                    text = input(" [+] Enter the text: ")
-                    order = int(input(" [+] Enter the key: "))
-                    print(" [-] Encrypted text: " + str(Caesar(text, order, 0)))
-
-                    key = input("\n [!] Press any key to continue...")
-                
-                    if key != "":
-                        caesar_choice = 0
-                        pass
-                    
-                elif caesar_choice == 2:
-                    self.cls()
-                    print(self.banner)
-                    print(" Caesar Cipher - Decrypt\n")
-                    text = input(" [+] Enter the text: ")
-                    order = int(input(" [+] Enter the key: "))
-                    print(" [-] Decrypted text: " + str(Caesar(text, order, 1)))
-
-                    key = input("\n [!] Press any key to continue...")
-                
-                    if key != "":
-                        caesar_choice = 0
-                        pass
-
-                elif caesar_choice == 3:
-                    self.cls()
-                    print(self.banner)
-                    print(" Caesar Cipher - Force Decrypt\n")
-                    text = input(" [+] Enter the text: ")
-                    print()
-                    caesar = Caesar(text, 0, 2).force()
-                    for c in caesar:
-                        print(" [-] Decrypted text: " + str(c))
-
-                    key = input("\n [!] Press any key to continue...")
-                
-                    if key != "":
-                        caesar_choice = 0
-                        pass
-
-                elif caesar_choice == 0:
-                    self.cls()
-                
-                self.cls()
-
-            except ValueError:
-                print(" [!] Invalid value. Try again. Caesar Cipher Menu")
-        except KeyboardInterrupt:
-            print("\n\n Cypherx ended!")
-
-    def AtbashTUI(self):
-        try:
-            try:
-                self.cls()
-                print(self.banner)
-                print(" Atbash Cipher\n")
-                print(" 1 - Encrypt")
-                print(" 2 - Decrypt")
-                print(" 0 - [bold red]Back[/bold red]")
-                atbash_choice = int(input("\n [=] Enter your choice: "))
-                    
-                if atbash_choice == 1:
-                    self.cls()
-                    print(self.banner)
-                    print(" Atbash Cipher - Encrypt\n")
-                    text = input(" [+] Enter the text: ")
-                    print(" [-] Encrypted text: " + str(Atbash(text, 0)))
-
-                    key = input("\n Press any key to continue...")
-                
-                    if key != "":
-                        atbash_choice = 0
-                        pass
-                    
-                elif atbash_choice == 2:
-                    self.cls()
-                    print(self.banner)
-                    print(" Atbash Cipher - Decrypt\n")
-                    text = input(" [+] Enter the text: ")
-                    print(" [-] Decrypted text: " + str(Atbash(text, 1)))
-
-                    key = input("\n [!] Press any key to continue...")
-                
-                    if key != "":
-                        atbash_choice = 0
-                        pass
-
-                elif atbash_choice == 0:
-                    self.cls()
-                    
-                self.cls()
-
-            except ValueError:
-                print(" [!] Invalid value. Try again. Atbash Cipher Menu")
-
-        except KeyboardInterrupt:
-            print("\n\n Cypherx ended!")
-
-    def terminalUI(self):
-
-        try:
-            
-            choice = 9
-
-            while choice != 0:
-                print(self.banner + self.menu)
-                choice = None
-                try:
-                    choice = int(input(" [=] Enter your choice: "))
-                except ValueError:
-                    self.cls()
-                    print(self.banner + '\r\n [!] Invalid option, try again.', end='', flush=True)
-                    time.sleep(1)
-                    self.cls()
-
-                if choice == 1:
-                    self.CaesarTUI()
-
-                elif choice == 2:
-                    self.AtbashTUI()
-
-                elif choice == 0:
-                    break
-
-        except KeyboardInterrupt:
-            print("\n\n Cypherx ended!")
